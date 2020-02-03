@@ -8,12 +8,16 @@ svg {
     display: block;
     margin: 0 auto;
 }
+p {text-align:center;}
 </style>
 </head>
 <body>
 
 <h1>Pie chart</h1>
-<h4>Fibonacci succesion of areas</h4>
+<h4>Input your data!</h4>
+
+
+<p><input align='bottom' id="values" value="1,1,2,3,5,8,13" onChange=makePC()></p>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -23,12 +27,14 @@ svg {
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
-<script>
+</body>
 
+<script>
+function makePC(){
 // set the dimensions and margins of the graph
-var width = 450
-    height = 450
-    margin = 40
+var width = 600
+    height = 600
+    margin = 50
 
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
 var radius = Math.min(width, height) / 2 - margin
@@ -42,7 +48,8 @@ var svg = d3.select("#my_dataviz")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 // Create dummy data
-var data = {A: 1, B: 1.00001, C:2, D:3, E:5, F:8, G:13}
+//var data = {A: 1, B: 1.00001, C:2, D:3, E:5, F:8, G:13}
+var data =  document.getElementById("values").value.split(",").map( item => parseInt(item,10))
 
 // set the color scale
 var color = d3.scaleOrdinal()
@@ -78,14 +85,15 @@ svg
   .data(data_ready)
   .enter()
   .append('text')
-  .text(function(d){ return d.data.key})
+  .text(function(d){ return d.data.value})
   .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
   .style("text-anchor", "middle")
   .style("font-size", 17)
+}
 
+makePC()
 
 </script>
 
-</body>
 
 </html>
